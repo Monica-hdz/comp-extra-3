@@ -1,0 +1,38 @@
+package com.palmartec.analizador;
+import java_cup.runtime.Symbol;
+
+parser code
+{:
+    private Symbol s;
+
+    public void syntax_error(Symbol s){
+        this.s = s;
+    }
+
+    public Symbol getS(){
+        return this.s;
+    }
+
+:};
+
+terminal Comillas, Igual, Apertura, Cierre, P_coma, Op_booleano, Identificador, 
+    Numero, Flotante, Value, ERROR;
+non terminal INICIO, DECLARACION, DECLARACIONES;
+
+start with INICIO;
+
+INICIO ::= 
+    Apertura DECLARACIONES Cierre 
+;
+
+DECLARACIONES ::=
+    DECLARACION | DECLARACION DECLARACIONES
+;
+
+DECLARACION ::= 
+    Identificador P_coma | 
+    Identificador Igual Numero P_coma |
+    Identificador Igual Flotante P_coma |
+    Identificador Igual Op_booleano P_coma |
+    Identificador Igual Comillas Value Comillas P_coma
+;
